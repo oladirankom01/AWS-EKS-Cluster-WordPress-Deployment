@@ -140,7 +140,13 @@ autoscaling:
   enabled: false
 ```
 
-This lab uses a separate `hpa.yaml`, so the chart's built-in HPA is disabled. For an end-to-end WordPress deployment, configure the container's `WORDPRESS_DB_HOST`, `WORDPRESS_DB_NAME`, `WORDPRESS_DB_USER`, and `WORDPRESS_DB_PASSWORD` in the Deployment template. Use a Kubernetes Secret for the credentials. Pin a tested WordPress image tag if you need repeatable builds.
+### 4. Verify and deploy microservice using helm
+
+Check whether the microservices was deployed by Helm and add ```httpRoute.enabled: false``` into the ```values.yaml``` file
+
+```bash
+helm status my-microservice
+```
 
 From the project root, run:
 
