@@ -4,20 +4,7 @@ I built this lab to practice deploying a containerized application on Amazon EKS
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    Client["Browser or Siege"] --> LB["AWS load balancer"]
-    subgraph EKS["Amazon EKS"]
-        SVC["Kubernetes Service"]
-        WP["WordPress Pods"]
-        HPA["Horizontal Pod Autoscaler"]
-        SVC --> WP
-        HPA -->|"Sets replica count"| DEP["WordPress Deployment"]
-        DEP --> WP
-    end
-    LB --> SVC
-    WP --> DB["MySQL or MariaDB"]
-```
+<img width="1600" src="images/eks-diagram.png"/>
 
 The diagram shows the intended setup. A functional WordPress installation requires a reachable MySQL or MariaDB database. The lab configuration also uses two independent scaling ranges: **3–6 worker nodes** for the managed node group and **1–5 application Pods** for the HPA. The node group bounds alone do not enable node autoscaling.
 
