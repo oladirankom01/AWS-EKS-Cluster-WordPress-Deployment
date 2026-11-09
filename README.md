@@ -15,6 +15,15 @@ The diagram shows the intended setup. A functional WordPress installation requir
 - A reachable database for a functional WordPress site and a working Kubernetes resource metrics API for the CPU-based scaling test.
 - The local Helm chart in `my-microservice/` and the HPA manifest in `hpa.yaml`.
 
+## Tools
+
+**Helm** - The package manager for Kubernetes
+   - Combines the templates with your values to generate Kubernetes YAML and submits it to the Kubernetes API.
+**Chart** - A template for Kubernetes resources
+**Value** - The number and value for the configuration
+**Kubernetes** - Takes the YAML file and builds out the resources, including running the pods
+
+
 ## Deploy the lab
 
 ### 1. Create and verify the cluster
