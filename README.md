@@ -161,17 +161,44 @@ helm status my-microservice
 
 When the Service shows `LoadBalancer`, copy the AWS DNS hostname from the `EXTERNAL-IP` column and open it in your browser over HTTP. If it stays at `<pending>`, check the events at the bottom of `kubectl describe service my-microservice -n default`.
 
-### 3. Set up the autoscaling test
+### 5. Set up the autoscaling test
 
-Confirm the metrics API returns data with `kubectl top pods -n default`. If metrics are unavailable, configure Kubernetes Metrics Server before running the test.
-
+1. Create the `hpa.yaml` file:
+    
+```bash
+touch hpa.yaml
+```
+    
+2. Add HPA configuration:
+   
 The original `hpa.yaml` targets a Deployment named `wordpress`. For the Helm release in this lab, set `spec.scaleTargetRef.name` to `my-microservice`, or confirm the actual name with `kubectl get deployments -n default`. The manifest sets a minimum of one Pod, a maximum of five, and a CPU utilization target of **50% of requested CPU**.
 
 ```bash
-kubectl apply -f hpa.yaml -n default
-kubectl get hpa -n default -w
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: wordpress-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: wordpress
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 50
+  ```
+3. Apply the HPA configuration:
+    
+```bash
+kubectl apply -f hpa.yaml
 ```
 
+```bash
+kubectl apply -f hpa.yaml -
+kubectl get hpa -w
+```
+
+**6. Running and Testing Seige on LoadBalancer**
 With WordPress responding successfully, run Siege from a second terminal. Replace the example hostname with the value from your Service.
 
 ```bash
@@ -182,13 +209,12 @@ kubectl run siege -n default --image=jstarcher/siege --restart=Never --command -
 kubectl logs -n default -f siege
 ```
 
-Compare CPU utilization and replica count before, during, and after the test. A healthy test shows successful HTTP responses. If CPU stays above the target long enough, look for the replica count to rise within the configured bounds. Record the observed counts and Siege results before claiming a successful scale-out.
+Compare CPU utilization and replica count before, during, and after the test. A healthy test shows successful HTTP responses. If CPU stays above the target long enough, look for the replica count to rise within the configured bounds.
 
-## What I verified
+## Extra steps taken
 
 - Changed the Service from `ClusterIP` to `LoadBalancer` and verified that AWS assigned it a DNS hostname. The endpoint served the initial NGINX welcome page.
 - Traced the NGINX response to the scaffolded chart's default image, switched the repository to `wordpress`, and verified that Kubernetes completed the rollout.
-- Documented the HPA and Siege procedure. WordPress database connectivity and measured scale-out are still validation steps.
 
 ## Troubleshooting
 
@@ -200,18 +226,5 @@ Compare CPU utilization and replica count before, during, and after the test. A 
 | Helm reports a nil pointer at `.Values.httpRoute.enabled` | Define `httpRoute.enabled: false` in the chart values when using the LoadBalancer path. |
 | HPA metrics show `<unknown>` | Check the metrics API, the Pods' CPU requests, and the HPA's target Deployment name. |
 
-## Clean up AWS resources
-
-Confirm your Kubernetes context points to the lab cluster. Remove the release while the cluster is still running so AWS can clean up its load balancer. Verify the lab load balancer is gone in the EC2 console before deleting the cluster.
-
-```bash
-kubectl delete pod siege -n default --ignore-not-found
-kubectl delete hpa wordpress-hpa -n default --ignore-not-found
-helm uninstall my-microservice -n default --wait
-```
-
-```bash
-eksctl delete cluster --name enterprise-cluster --region us-east-1 --wait
-```
 
 Check for any database resources or persistent volumes you created separately and clean them up when you no longer need their data.
