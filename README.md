@@ -144,17 +144,19 @@ autoscaling:
 
 Check whether the microservices was deployed by Helm and add ```httpRoute.enabled: false``` into the ```values.yaml``` file
 
-```bash
-helm status my-microservice
-```
-
 From the project root, run:
 
 ```bash
 helm lint ./my-microservice
-helm upgrade --install my-microservice ./my-microservice --namespace default
-kubectl rollout status deployment/my-microservice --namespace default
-kubectl get service my-microservice --namespace default
+```
+
+This creates the pods (my-microservices) inside the nodes (EC2)
+```bash
+helm upgrade --install my-microservice ./my-microservice
+```
+
+```bash
+helm status my-microservice
 ```
 
 When the Service shows `LoadBalancer`, copy the AWS DNS hostname from the `EXTERNAL-IP` column and open it in your browser over HTTP. If it stays at `<pending>`, check the events at the bottom of `kubectl describe service my-microservice -n default`.
