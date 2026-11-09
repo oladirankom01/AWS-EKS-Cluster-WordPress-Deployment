@@ -165,12 +165,13 @@ helm upgrade --install my-microservice ./my-microservice
 ```bash
 helm status my-microservice
 ```
-<img width="800" src="images/active-pods.png"/>
-<img width="800" src="images/wordpress.png"/>
+
+<img width="800" src="images/eks-helm.png"/>
 
 When the Service shows `LoadBalancer`, copy the AWS DNS hostname from the `EXTERNAL-IP` column and open it in your browser over HTTP. If it stays at `<pending>`, check the events at the bottom of `kubectl describe service my-microservice -n default`.
 
-<img width="800" src="images/eks-helm.png"/>
+<img width="800" src="images/active-pods.png"/>
+<img width="800" src="images/wordpress.png"/>
 
 ### 5. Set up the autoscaling test
 
@@ -220,6 +221,7 @@ kubectl run siege -n default --image=jstarcher/siege --restart=Never --command -
   siege -c 100 -t 5m "http://${LB_HOST}/"
 kubectl logs -n default -f siege
 ```
+<img width="800" src="images/kubectl get request.png"/>
 
 Compare CPU utilization and replica count before, during, and after the test. A healthy test shows successful HTTP responses. If CPU stays above the target long enough, look for the replica count to rise within the configured bounds.
 
