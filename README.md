@@ -70,17 +70,20 @@ eksctl create cluster \
   --nodes-min 3 \
   --nodes-max 6 \
   --managed
+```
+<img width="800" src="images/create-cluster.png"/>
 
+```bash
 aws eks update-kubeconfig --name enterprise-cluster --region us-east-1
 kubectl config current-context
 kubectl get nodes
 ```
 
+The cluster starts with three managed EC2 worker nodes. Confirm the context points to `enterprise-cluster` and the nodes show `Ready` before deploying.
+
 <img width="800" src="images/ec2-servers.png"/>
 <img width="800" src="images/enterprise-cluster.png"/>
 <img width="800" src="images/eks -status.png"/>
-
-The cluster starts with three managed EC2 worker nodes. Confirm the context points to `enterprise-cluster` and the nodes show `Ready` before deploying.
 
 ### 2. Installing  Helm 
 
