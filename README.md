@@ -165,8 +165,12 @@ helm upgrade --install my-microservice ./my-microservice
 ```bash
 helm status my-microservice
 ```
+<img width="800" src="images/active-pods.png"/>
+<img width="800" src="images/wordpress.png"/>
 
 When the Service shows `LoadBalancer`, copy the AWS DNS hostname from the `EXTERNAL-IP` column and open it in your browser over HTTP. If it stays at `<pending>`, check the events at the bottom of `kubectl describe service my-microservice -n default`.
+
+<img width="800" src="images/eks-helm.png"/>
 
 ### 5. Set up the autoscaling test
 
@@ -199,6 +203,7 @@ spec:
 ```bash
 kubectl apply -f hpa.yaml
 ```
+<img width="800" src="images/active-hpa.png"/>
 
 ```bash
 kubectl apply -f hpa.yaml -
