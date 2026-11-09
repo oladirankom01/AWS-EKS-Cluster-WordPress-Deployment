@@ -78,7 +78,36 @@ kubectl get nodes
 
 The cluster starts with three managed EC2 worker nodes. Confirm the context points to `enterprise-cluster` and the nodes show `Ready` before deploying.
 
-### 2. Configure and deploy the Helm chart
+### 2. Installing  Helm 
+
+Helm is installed on the local machine and is uused to manage Kubernetes applications
+
+```bash
+mkdir -p /c/tools/helm
+
+curl -fL https://get.helm.sh/helm-v3.22.1-windows-amd64.zip \
+  -o /tmp/helm.zip
+
+unzip -o /tmp/helm.zip -d /tmp/helm-install
+
+cp /tmp/helm-install/windows-amd64/helm.exe /c/tools/helm/
+
+export PATH="/c/tools/helm:$PATH"
+```
+
+Verify the Helm installation is complete and see the version number
+
+```bash
+helm version
+```
+
+Use the command to make that location available in future Git Bash sessions
+
+```bash
+echo 'export PATH="/c/tools/helm:$PATH"' >> ~/.bashrc
+```
+
+### 3. Configure and deploy the Helm chart
 
 If recreating the chart from scratch, run `helm create my-microservice`. In `my-microservice/values.yaml`, update the existing sections to match the settings below. Keep the other chart defaults.
 
