@@ -76,6 +76,10 @@ kubectl config current-context
 kubectl get nodes
 ```
 
+<img width="800" src="images/ec2-servers.png"/>
+<img width="800" src="images/enterprise-cluster.png"/>
+<img width="800" src="images/eks -status.png"/>
+
 The cluster starts with three managed EC2 worker nodes. Confirm the context points to `enterprise-cluster` and the nodes show `Ready` before deploying.
 
 ### 2. Installing  Helm 
