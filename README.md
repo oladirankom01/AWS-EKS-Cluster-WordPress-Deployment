@@ -17,12 +17,36 @@ The diagram shows the intended setup. A functional WordPress installation requir
 
 ## Tools
 
-**Helm** - The package manager for Kubernetes
-   - Combines the templates with your values to generate Kubernetes YAML and submits it to the Kubernetes API.
-**Chart** - A template for Kubernetes resources
-**Value** - The number and value for the configuration
-**Kubernetes** - Takes the YAML file and builds out the resources, including running the pods
+- **Helm** - The package manager for Kubernetes. Combines the templates with your values to generate Kubernetes YAML and submits it to the Kubernetes API.
+- **Chart** - A template for Kubernetes resources
+- **Value** - The number and value for the configuration
+- **Kubernetes** - Takes the YAML file and builds out the resources, including running the pods
 
+## Install AWS CLI and eksctl 
+
+Installing the required tools (AWS CLI & `eksctl`) to start the project.
+
+```bash
+aws --version
+```
+
+```bash
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_windows_amd64.zip" -o "eksctl.zip"
+unzip eksctl.zip -d eksctl
+```
+
+Move `eksctl` to a new folder
+
+```bash
+mkdir -p /c/tools/eksctl
+mv ./eksctl/eksctl.exe /c/tools/eksctl/eksctl.exe
+```
+
+Add `eksctl` to the PATH
+
+```bash
+export PATH=$PATH:/c/tools/eksctl
+```
 
 ## Deploy the lab
 
