@@ -48,6 +48,12 @@ Add `eksctl` to the PATH
 export PATH=$PATH:/c/tools/eksctl
 ```
 
+Set up AWS CLI Credential
+
+```bash
+aws configure
+```
+
 ## Deploy the lab
 
 ### 1. Create and verify the cluster
